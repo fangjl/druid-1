@@ -21,6 +21,8 @@ package io.druid.server;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.inject.Inject;
+import io.druid.guice.annotations.Self;
 import io.druid.initialization.DruidModule;
 import io.druid.initialization.Initialization;
 
@@ -37,6 +39,8 @@ import java.util.List;
 @Path("/status")
 public class StatusResource
 {
+  @Inject
+  private final @Self DruidNode myNode = null;
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   public Status doGet()

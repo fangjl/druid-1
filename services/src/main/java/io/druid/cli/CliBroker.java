@@ -72,9 +72,9 @@ public class CliBroker extends ServerRunnable
   }
 
   @Override
-  protected List<Object> getModules()
+  protected List<? extends Module> getModules()
   {
-    return ImmutableList.<Object>of(
+    return ImmutableList.<Module>of(
         new Module()
         {
           @Override
@@ -88,8 +88,6 @@ public class CliBroker extends ServerRunnable
             binder.bind(QueryToolChestWarehouse.class).to(MapQueryToolChestWarehouse.class);
 
             binder.bind(CachingClusteredClient.class).in(LazySingleton.class);
-            binder.bind(BrokerServerView.class).in(LazySingleton.class);
-            binder.bind(TimelineServerView.class).to(BrokerServerView.class).in(LazySingleton.class);
 
             binder.bind(Cache.class).toProvider(CacheProvider.class).in(ManageLifecycle.class);
             JsonConfigProvider.bind(binder, "druid.cache", CacheProvider.class);
@@ -98,6 +96,9 @@ public class CliBroker extends ServerRunnable
             JsonConfigProvider.bind(binder, "druid.broker.select.tier.custom", CustomTierSelectorStrategyConfig.class);
             JsonConfigProvider.bind(binder, "druid.broker.balancer", ServerSelectorStrategy.class);
             JsonConfigProvider.bind(binder, "druid.broker.retryPolicy", RetryQueryRunnerConfig.class);
+
+            binder.bind(TimelineServerView.class).to(BrokerServerView.class).in(LazySingleton.class);
+            binder.bind(BrokerServerView.class).in(LazySingleton.class);
 
             binder.bind(QuerySegmentWalker.class).to(ClientQuerySegmentWalker.class).in(LazySingleton.class);
 
